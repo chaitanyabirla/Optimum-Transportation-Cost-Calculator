@@ -6,29 +6,16 @@ INF = 10**5
 
 # Function to get difference arrays for row and column
 def Diff_step(grid):
-  rowdiff=[]# Compute the difference step in the x-direction
-  coldiff=[]# ''''----Opposite
-  for i in range(len(grid)):
-     arr = grid[i][:]
-     arr.sort()
-     rowdiff.append(arr[1]-arr[0])# finding difference
-  col=0
-  while col < len(grid[0]):
-    arr=[]
-
-    for i in range(len(grid)):
-      arr.append(grid[i][col])#pick up first values from each row
-    arr.sort()
-    col += 1
-    coldiff.append(arr[1]-arr[0])# finding difference columnwise
-  return rowdiff,coldiff
+    row_diff = [max(row) - min(row) for row in grid]
+    col_diff = [max(col) - min(col) for col in np.transpose(grid)]
+    return row_diff, col_diff
 
 # Custom CSS for styling
 st.markdown("""
     <style>
         .title {
             font-size: 2em;
-            color: #12984F;
+            color: #4CAF50;
             text-align: center;
             margin-top: -50px;
         }
@@ -41,21 +28,21 @@ st.markdown("""
         }
         .result {
             font-size: 1.5em;
-            color: #12984F;
+            color: #ff6347;
             text-align: center;
         }
         .stButton>button {
             width: 100%;
             height: 50px;
             font-size: 1.2em;
-            background-color: #12984F;
+            background-color: #4CAF50;
             color: white;
             border-radius: 10px;
             border: none;
             transition: background-color 0.3s ease;
         }
         .stButton>button:hover {
-            background-color: #12984F;
+            background-color: #45a049;
         }
     </style>
 """, unsafe_allow_html=True)

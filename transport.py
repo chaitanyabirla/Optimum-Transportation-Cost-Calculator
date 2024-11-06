@@ -5,13 +5,14 @@ import numpy as np
 INF = 10**5
 
 # Function to get difference arrays for row and column
-def Diff_step(grid):
+def Diff_step(grid): 
   rowdiff=[]# Compute the difference step in the x-direction
   coldiff=[]# ''''----Opposite
   for i in range(len(grid)):
      arr = grid[i][:]
      arr.sort()
      rowdiff.append(arr[1]-arr[0])# finding difference
+  
   col=0
   while col < len(grid[0]):
     arr=[]

@@ -1,29 +1,6 @@
 import streamlit as st
 import numpy as np
 
-# Define INF for unreachable routes or very high costs
-INF = 10**5
-
-# Function to get difference arrays for row and column
-def Diff_step(grid): 
-  rowdiff=[]# Compute the difference step in the x-direction
-  coldiff=[]# ''''----Opposite
-  for i in range(len(grid)):
-     arr = grid[i][:]
-     arr.sort()
-     rowdiff.append(arr[1]-arr[0])# finding difference
-  
-  col=0
-  while col < len(grid[0]):
-    arr=[]
-
-    for i in range(len(grid)):
-      arr.append(grid[i][col])#pick up first values from each row
-    arr.sort()
-    col += 1
-    coldiff.append(arr[1]-arr[0])# finding difference columnwise
-  return rowdiff,coldiff
-
 # Custom CSS for styling
 st.markdown("""
     <style>
@@ -72,7 +49,6 @@ with st.container():
     m = cols[1].number_input("Number of Demand Points:", min_value=1, step=1)
 
 # Step 2: Input for supply and demand amounts in comma-separated format
-#st.markdown('<div class="input-section">', unsafe_allow_html=True)
 st.subheader("Supply and Demand Inputs")
 cols = st.columns(2)
 supply_input = cols[0].text_input("Supply amounts (comma-separated):", value="20, 30, 50")
@@ -92,7 +68,6 @@ except ValueError:
 st.markdown('</div>', unsafe_allow_html=True)
 
 # Step 3: Input for cost matrix as text area
-#st.markdown('<div class="input-section">', unsafe_allow_html=True)
 st.subheader("Cost Matrix Input")
 st.write("Enter the cost matrix with rows separated by newlines and values separated by commas.")
 matrix_input = st.text_area("Cost Matrix", value="8, 6, 10, 9\n9, 12, 13, 7\n14, 9, 16, 5")
@@ -116,7 +91,30 @@ st.write("**Demand:**", demand)
 st.write("**Cost Matrix:**")
 st.table(grid)
 
-# Main logic to solve the transportation problem
+# Define INF for unreachable routes or very high costs
+INF = 10**5
+
+# Step 4: Get difference arrays for row and column
+def Diff_step(grid): 
+  rowdiff=[]# Compute the difference step in the x-direction
+  coldiff=[]# ''''----Opposite
+  for i in range(len(grid)):
+     arr = grid[i][:]
+     arr.sort()
+     rowdiff.append(arr[1]-arr[0])# finding difference
+  
+  col=0
+  while col < len(grid[0]):
+    arr=[]
+
+    for i in range(len(grid)):
+      arr.append(grid[i][col])#pick up first values from each row
+    arr.sort()
+    col += 1
+    coldiff.append(arr[1]-arr[0])# finding difference columnwise
+  return rowdiff,coldiff
+
+# Step 5: Main logic to solve the transportation problem
 def solve_transportation_problem(grid, supply, demand, n, m):
     ans = 0
     while max(supply) != 0 or max(demand) != 0:
@@ -162,7 +160,7 @@ def solve_transportation_problem(grid, supply, demand, n, m):
                     break
     return ans
 
-# Calculate and display result in a formal popup
+# Step 6: Calculate and display result in a formal popup
 if st.button("Calculate Optimal Cost"):
     grid_copy = [row[:] for row in grid]
     supply_copy = supply[:]
